@@ -1,6 +1,3 @@
 import axios from 'axios';
-import { IUserDTO } from '../../shared/IUserDTO';
-
-export function loadUsersAPI() {
-  return axios.get(`/api/users`).then(res => res.data as IUserDTO[]);
-}
+import { Remult } from 'remult';
+export const remult = new Remult(axios);

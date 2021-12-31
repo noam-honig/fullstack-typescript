@@ -8,6 +8,8 @@
     "sourceMap": true,
     "skipLibCheck": true,
     "allowSyntheticDefaultImports": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
     "isolatedModules": true,
     "outDir": "../../dist/shared",
     "lib": ["ES2019"],

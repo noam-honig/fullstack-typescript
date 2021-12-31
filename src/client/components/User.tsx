@@ -3,16 +3,15 @@ import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import Typography from '@mui/material/Typography';
 import React from 'react';
-import { IUserDTO } from '../../shared/IUserDTO';
-import { getUserFullName } from '../../shared/utils';
+import { User } from '../../shared/User';
 
 interface IProps {
-  user: IUserDTO;
+  user: User;
 }
 
-export const User: React.FC<IProps> = ({ user }) => (
+export const UserInfo: React.FC<IProps> = ({ user }) => (
   <Card data-testid='user-card'>
-    <CardHeader data-testid='user-card-header' title={`User: ${getUserFullName(user)}`} />
+    <CardHeader data-testid='user-card-header' title={`User: ${user.getFullName()}`} />
     <CardContent>
       <Typography>Id: {user.userId}</Typography>
       <Typography>Image Url: {user.imageUrl}</Typography>
