@@ -8,7 +8,7 @@ import React from 'react';
 import { remult } from '../utils/api-facade';
 import { User } from '../../shared/User';
 
-const userReop = remult.repo(User);
+const userRepo = remult.repo(User);
 
 export const UsersList: React.FC = () => {
   const [users, setUsers] = React.useState<User[]>(null);
@@ -18,7 +18,7 @@ export const UsersList: React.FC = () => {
     let cancelled = false;
     const fetchUsers = async () => {
       setIsLoading(true);
-      const users = await userReop.find();
+      const users = await userRepo.find();
       if (!cancelled) {
         setUsers(users);
         setIsLoading(false);
