@@ -16,8 +16,9 @@ interface IProps {
     user: User;
     onClose: () => void;
     onSaved: (user: User) => void;
+    create?: boolean;
 }
-export const UserEditor: React.FC<IProps> = ({ user, onClose, onSaved }) => {
+export const UserEditor: React.FC<IProps> = ({ user, onClose, onSaved, create }) => {
     const [firstName, setFirstName] = React.useState(user.firstName);
     const [lastName, setLastName] = React.useState(user.lastName);
     const [imageUrl, setImageUrl] = React.useState(user.imageUrl);
@@ -27,23 +28,25 @@ export const UserEditor: React.FC<IProps> = ({ user, onClose, onSaved }) => {
     };
     const handleSave = async () => {
         setErrors(null);
-        const ref = userRepo.getEntityRef(user);
+
         try {
-            user.firstName = firstName;
-            user.lastName = lastName;
-            user.imageUrl = imageUrl;
-            const newUser = await userRepo.save(user);
+            const newUser = await userRepo.save({
+                userId: user.userId,
+                firstName,
+                lastName,
+                imageUrl
+            }, create);
             onSaved(newUser);
             handleClose();
         }
         catch (err: any) {
-            ref.undoChanges();
+
             setErrors(err);
         }
     }
     return (
         <Dialog open={Boolean(user)} onClose={handleClose}>
-            <DialogTitle>User Info</DialogTitle>
+            <DialogTitle>{create ? "Create " : "Update "} User</DialogTitle>
             <DialogContent>
                 <Box
                     component="form"

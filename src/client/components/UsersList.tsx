@@ -89,6 +89,7 @@ export const UsersList: React.FC = () => {
 
       {newUser && <UserEditor
         user={newUser}
+        create={true}
         onClose={() => setNewUser(null)}
         onSaved={newUserSaved} />}
     </Grid>
