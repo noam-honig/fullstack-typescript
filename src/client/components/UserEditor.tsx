@@ -6,11 +6,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { User } from '../../shared/User';
-import { remult } from '../utils/api-facade';
 import { Box } from '@mui/material';
-import { ErrorInfo } from 'remult';
-
-const userRepo = remult.repo(User);
 
 interface IProps {
     user: User;
@@ -19,29 +15,18 @@ interface IProps {
     create?: boolean;
 }
 export const UserEditor: React.FC<IProps> = ({ user, onClose, onSaved, create }) => {
-    const [firstName, setFirstName] = React.useState(user.firstName);
-    const [lastName, setLastName] = React.useState(user.lastName);
-    const [imageUrl, setImageUrl] = React.useState(user.imageUrl);
-    const [errors, setErrors] = React.useState<ErrorInfo<User>>(null);
+    const [, refresh] = React.useState({});
     const handleClose = () => {
+        user._.undoChanges();
         onClose();
     };
     const handleSave = async () => {
-        setErrors(null);
-
         try {
-            const newUser = await userRepo.save({
-                userId: user.userId,
-                firstName,
-                lastName,
-                imageUrl
-            }, create);
-            onSaved(newUser);
+            await user.save()
+            onSaved(user);
             handleClose();
         }
         catch (err: any) {
-
-            setErrors(err);
         }
     }
     return (
@@ -56,34 +41,23 @@ export const UserEditor: React.FC<IProps> = ({ user, onClose, onSaved, create })
                     noValidate
                     autoComplete="off"
                 >
-                    <TextField
-                        autoFocus
-                        id="firstName"
-                        label="First Name"
-                        fullWidth
-                        value={firstName}
-                        onChange={e => setFirstName(e.target.value)}
-                        error={Boolean(errors?.modelState?.firstName)}
-                        helperText={errors?.modelState?.firstName}
-                    />
-                    <TextField
-                        id="lastName"
-                        label="Last Name"
-                        fullWidth
-                        value={lastName}
-                        onChange={e => setLastName(e.target.value)}
-                        error={Boolean(errors?.modelState?.lastName)}
-                        helperText={errors?.modelState?.lastName}
-                    />
-                    <TextField
-                        id="imageUrl"
-                        label="Image Url"
-                        fullWidth
-                        value={imageUrl}
-                        onChange={e => setImageUrl(e.target.value)}
-                        error={Boolean(errors?.modelState?.imageUrl)}
-                        helperText={errors?.modelState?.imageUrl}
-                    />
+                    {[
+                        user.$.firstName,
+                        user.$.lastName,
+                        user.$.imageUrl
+                    ].map((field, index) => (
+                        <TextField
+                            autoFocus={index === 0}
+                            key={field.metadata.key}
+                            id={field.metadata.key}
+                            label={field.metadata.caption}
+                            fullWidth
+                            value={field.value}
+                            onChange={e => { field.value = e.target.value; refresh({}) }}
+                            error={Boolean(field.error)}
+                            helperText={field.error}
+                        />
+                    ))}
                 </Box>
             </DialogContent>
             <DialogActions>

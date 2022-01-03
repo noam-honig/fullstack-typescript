@@ -1,7 +1,7 @@
-import { Entity, Field, UuidField, Validators } from "remult";
+import { Entity, EntityBase, Field, UuidField, Validators } from "remult";
 
 @Entity("user", { allowApiCrud: true })
-export class User {
+export class User extends EntityBase {
     @UuidField()
     userId: string = ''
     @Field({
