@@ -58,6 +58,7 @@ export const UserEditor: React.FC<IProps> = ({ user, onClose, onSaved, create })
                 >{fields.map((field, i) => (<TextField
                     autoFocus={i == 0}
                     id={field.key}
+                    key={field.key}
                     label={field.caption}
                     fullWidth
                     value={state[field.key]}
