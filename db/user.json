@@ -2,7 +2,7 @@
   {
     "imageUrl": "/statics/gil.jpg",
     "userId": "1",
-    "firstName": "Gil",
+    "firstName": "Gil ",
     "lastName": "Amran"
   },
   {
@@ -27,6 +27,12 @@
     "userId": "ca3e30d7-b39e-4dc3-9a95-64ba1679392a",
     "firstName": "Yael",
     "lastName": "Katri Honig",
+    "imageUrl": ""
+  },
+  {
+    "userId": "1cfe164b-64e5-4fb0-9c15-5654935d7523",
+    "firstName": "Itamar",
+    "lastName": "Honig",
     "imageUrl": ""
   }
 ]

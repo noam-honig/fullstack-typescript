@@ -19,9 +19,11 @@ interface IProps {
     create?: boolean;
 }
 export const UserEditor: React.FC<IProps> = ({ user, onClose, onSaved, create }) => {
-    const [firstName, setFirstName] = React.useState(user.firstName);
-    const [lastName, setLastName] = React.useState(user.lastName);
-    const [imageUrl, setImageUrl] = React.useState(user.imageUrl);
+    const fields = React.useMemo(() => {
+        let f = userRepo.metadata.fields;
+        return [f.firstName, f.lastName, f.imageUrl];
+    }, []);
+    const [state, setState] = React.useState(() => fields.reduce((result, field) => ({ ...result, [field.key]: user[field.key] }), {}));
     const [errors, setErrors] = React.useState<ErrorInfo<User>>(null);
     const handleClose = () => {
         onClose();
@@ -31,10 +33,8 @@ export const UserEditor: React.FC<IProps> = ({ user, onClose, onSaved, create })
 
         try {
             const newUser = await userRepo.save({
-                userId: user.userId,
-                firstName,
-                lastName,
-                imageUrl
+                ...state,
+                userId: user.userId
             }, create);
             onSaved(newUser);
             handleClose();
@@ -55,35 +55,16 @@ export const UserEditor: React.FC<IProps> = ({ user, onClose, onSaved, create })
                     }}
                     noValidate
                     autoComplete="off"
-                >
-                    <TextField
-                        autoFocus
-                        id="firstName"
-                        label="First Name"
-                        fullWidth
-                        value={firstName}
-                        onChange={e => setFirstName(e.target.value)}
-                        error={Boolean(errors?.modelState?.firstName)}
-                        helperText={errors?.modelState?.firstName}
-                    />
-                    <TextField
-                        id="lastName"
-                        label="Last Name"
-                        fullWidth
-                        value={lastName}
-                        onChange={e => setLastName(e.target.value)}
-                        error={Boolean(errors?.modelState?.lastName)}
-                        helperText={errors?.modelState?.lastName}
-                    />
-                    <TextField
-                        id="imageUrl"
-                        label="Image Url"
-                        fullWidth
-                        value={imageUrl}
-                        onChange={e => setImageUrl(e.target.value)}
-                        error={Boolean(errors?.modelState?.imageUrl)}
-                        helperText={errors?.modelState?.imageUrl}
-                    />
+                >{fields.map((field, i) => (<TextField
+                    autoFocus={i == 0}
+                    id={field.key}
+                    label={field.caption}
+                    fullWidth
+                    value={state[field.key]}
+                    onChange={e => setState({ ...state, [field.key]: e.target.value })}
+                    error={Boolean(errors?.modelState[field.key])}
+                    helperText={errors?.modelState[field.key]}
+                />))}
                 </Box>
             </DialogContent>
             <DialogActions>
