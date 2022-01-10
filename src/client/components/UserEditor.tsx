@@ -19,9 +19,7 @@ interface IProps {
     create?: boolean;
 }
 export const UserEditor: React.FC<IProps> = ({ user, onClose, onSaved, create }) => {
-    const [firstName, setFirstName] = React.useState(user.firstName);
-    const [lastName, setLastName] = React.useState(user.lastName);
-    const [imageUrl, setImageUrl] = React.useState(user.imageUrl);
+    const [data, setData] = React.useState<Partial<User>>(user);
     const [errors, setErrors] = React.useState<ErrorInfo<User>>(null);
     const handleClose = () => {
         onClose();
@@ -30,12 +28,7 @@ export const UserEditor: React.FC<IProps> = ({ user, onClose, onSaved, create })
         setErrors(null);
 
         try {
-            const newUser = await userRepo.save({
-                userId: user.userId,
-                firstName,
-                lastName,
-                imageUrl
-            }, create);
+            const newUser = await userRepo.save(data, create);
             onSaved(newUser);
             handleClose();
         }
@@ -61,8 +54,8 @@ export const UserEditor: React.FC<IProps> = ({ user, onClose, onSaved, create })
                         id="firstName"
                         label="First Name"
                         fullWidth
-                        value={firstName}
-                        onChange={e => setFirstName(e.target.value)}
+                        value={data.firstName}
+                        onChange={e => setData({ ...data, firstName: e.target.value })}
                         error={Boolean(errors?.modelState?.firstName)}
                         helperText={errors?.modelState?.firstName}
                     />
@@ -70,8 +63,8 @@ export const UserEditor: React.FC<IProps> = ({ user, onClose, onSaved, create })
                         id="lastName"
                         label="Last Name"
                         fullWidth
-                        value={lastName}
-                        onChange={e => setLastName(e.target.value)}
+                        value={data.lastName}
+                        onChange={e => setData({ ...data, lastName: e.target.value })}
                         error={Boolean(errors?.modelState?.lastName)}
                         helperText={errors?.modelState?.lastName}
                     />
@@ -79,8 +72,8 @@ export const UserEditor: React.FC<IProps> = ({ user, onClose, onSaved, create })
                         id="imageUrl"
                         label="Image Url"
                         fullWidth
-                        value={imageUrl}
-                        onChange={e => setImageUrl(e.target.value)}
+                        value={data.imageUrl}
+                        onChange={e => setData({ ...data, imageUrl: e.target.value })}
                         error={Boolean(errors?.modelState?.imageUrl)}
                         helperText={errors?.modelState?.imageUrl}
                     />
