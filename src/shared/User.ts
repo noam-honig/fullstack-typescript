@@ -1,15 +1,19 @@
-import { Entity, Field } from "remult";
+import { Entity, Field, UuidField, Validators } from "remult";
 
 @Entity("user", { allowApiCrud: true })
 export class User {
+    @UuidField()
+    userId: string = ''
+    @Field({
+        validate: Validators.required
+    })
+    firstName: string = '';
+    @Field({
+        validate: Validators.required
+    })
+    lastName: string = '';
     @Field()
-    userId: string;
-    @Field()
-    firstName: string;
-    @Field()
-    lastName: string;
-    @Field()
-    imageUrl: string;
+    imageUrl: string = '';
 
     getFullName() {
         return `${this.firstName} ${this.lastName}`

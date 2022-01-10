@@ -16,5 +16,23 @@
     "userId": "3",
     "firstName": "John",
     "lastName": "Doe"
+  },
+  {
+    "userId": "fcfadef5-06b6-4aee-8da9-dffe57f1acc6",
+    "firstName": "Noam",
+    "lastName": "Honig",
+    "imageUrl": ""
+  },
+  {
+    "userId": "ca3e30d7-b39e-4dc3-9a95-64ba1679392a",
+    "firstName": "Yael",
+    "lastName": "Katri Honig",
+    "imageUrl": ""
+  },
+  {
+    "userId": "ab8f647a-abce-43db-b017-941e2502bb2c",
+    "firstName": "Maayan",
+    "lastName": "Honig",
+    "imageUrl": ""
   }
 ]
