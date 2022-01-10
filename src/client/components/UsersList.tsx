@@ -27,7 +27,7 @@ export const UsersList: React.FC = () => {
     setUsers([...users, newUser]);
   const deleteUser = async (user: User) => {
     await userRepo.delete(user);
-    setUsers(users.filter(u => u.userId != user.userId));
+    setUsers(users.filter(u => u.userId !== user.userId));
   }
 
 
