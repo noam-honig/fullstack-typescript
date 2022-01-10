@@ -14,7 +14,7 @@ const userRepo = remult.repo(User);
 
 interface IProps {
     user: User;
-    onClose: () => void;
+    onClose: VoidFunction;
     onSaved: (user: User) => void;
     create?: boolean;
 }
